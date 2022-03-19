@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.model.testcase
+package com.testspec.demo.domain.model.testcase.type
 
 /**
  * テストに使用する入力値

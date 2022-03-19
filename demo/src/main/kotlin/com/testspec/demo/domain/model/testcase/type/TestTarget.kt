@@ -1,5 +1,8 @@
-package com.testspec.demo.domain.model.testcase
+package com.testspec.demo.domain.model.testcase.type
 
+/**
+ * テスト対象項目
+ */
 class TestTarget(
     private val target: String
 ) {

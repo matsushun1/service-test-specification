@@ -1,5 +1,8 @@
-package com.testspec.demo.domain.model.testcase
+package com.testspec.demo.domain.model.testcase.type
 
+/**
+ * 動作期待内容
+ */
 class Expected(
     private val expected: String
 ) {
