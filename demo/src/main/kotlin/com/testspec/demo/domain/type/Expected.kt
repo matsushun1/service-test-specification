@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.model.testcase.type
+package com.testspec.demo.domain.type
 
 /**
  * 動作期待内容

@@ -1,4 +1,7 @@
 package com.testspec.demo.domain.model.testcase
 
-class TestCases {
+/**
+ * テストケースのリストクラス
+ */
+class TestCases(val testCases: List<TestCase>) {
 }

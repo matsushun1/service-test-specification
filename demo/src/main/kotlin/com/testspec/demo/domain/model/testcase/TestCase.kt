@@ -1,6 +1,7 @@
-package com.testspec.demo.domain.model.testcase.type
+package com.testspec.demo.domain.model.testcase
 
 import com.testspec.demo.domain.model.testcase.businessrules.TestCaseStatus
+import com.testspec.demo.domain.model.testcase.type.Parameters
 import com.testspec.demo.domain.type.*
 
 /**
