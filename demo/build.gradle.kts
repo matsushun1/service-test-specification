@@ -3,8 +3,23 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "2.6.4"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	id("io.gitlab.arturbosch.detekt").version("1.20.0-RC2")
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
+}
+
+detekt {
+	toolVersion = "1.20.0-RC2"
+	config = files("config/detekt/detekt.yml")
+	buildUponDefaultConfig = true
+	tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+		reports {
+			html {
+				isEnabled = true
+				outputLocation.set(file("config/detekt/reports/report.html"))
+			}
+		}
+	}
 }
 
 group = "com.testspec"
@@ -26,6 +41,8 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+
+
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
