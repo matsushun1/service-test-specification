@@ -2,7 +2,5 @@ package com.testspec.demo.domain.model.testspecification.type
 
 import java.time.OffsetDateTime
 
-class CreateDt(
-    val createDt: OffsetDateTime
-) {
+class TestedDt(val testedDt: OffsetDateTime) {
 }
