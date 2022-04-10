@@ -6,7 +6,7 @@ import java.util.*
  * テストケースの実施ステータスルール
  */
 class TestCaseTransitions {
-    private val allowed = mutableMapOf<TestCaseStatus, EnumSet<TestCaseStatus>>()
+    private val allowed = mutableMapOf<TestCaseStatus, EnumSet<TestCaseStatus>>() // TODO: initをそのまま宣言させてイミュータブルにする
 
     init {
         this.allowed[TestCaseStatus.UNCOMPLETED] = EnumSet.of(TestCaseStatus.TESTING, TestCaseStatus.COMPLETED)

@@ -8,7 +8,4 @@ import org.springframework.stereotype.Service
 class TestCaseService @Autowired constructor(
     val testCase: TestCase
 ) {
-    fun create() {
-        println("create")
-    }
 }

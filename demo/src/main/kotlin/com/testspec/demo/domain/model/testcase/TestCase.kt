@@ -14,6 +14,6 @@ class TestCase(
     val version: Version,
     val tags: Tags,
     val testSupplement: TestSupplement,
-    val testCaseStatus: TestCaseStatus
+    val testCaseStatus: TestCaseStatus = TestCaseStatus.UNCOMPLETED
 ) {
 }
