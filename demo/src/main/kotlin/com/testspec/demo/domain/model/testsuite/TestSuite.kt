@@ -10,7 +10,6 @@ class TestSuite(
     val testCases: TestCases,
     val testTarget: TestTarget,
     val expected: Expected,
-    val version: Version,
     val tags: Tags,
     val testSupplement: TestSupplement
 ) {

@@ -7,5 +7,5 @@ import com.testspec.demo.domain.model.account.type.MailAddress
 /**
  * テスト仕様書の納品責任者
  */
-class Approver(fullName: FullName, mailAddress: MailAddress): Account(fullName, mailAddress) {
+class Approver() {
 }

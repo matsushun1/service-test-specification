@@ -11,7 +11,6 @@ class TestCase(
     val testTarget: TestTarget,
     val expected: Expected,
     val parameters: Parameters,
-    val version: Version,
     val tags: Tags,
     val testSupplement: TestSupplement,
     val testCaseStatus: TestCaseStatus = TestCaseStatus.UNCOMPLETED
