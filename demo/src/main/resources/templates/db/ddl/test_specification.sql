@@ -1,5 +1,5 @@
 -- Project Name : test_specification
--- Date/Time    : 2022/04/17 21:29:14
+-- Date/Time    : 2022/04/24 18:29:41
 -- Author       : masshun
 -- RDBMS Type   : PostgreSQL
 -- Application  : A5:SQL Mk-2
@@ -12,40 +12,42 @@
   この機能は A5:SQL Mk-2でのみ有効であることに注意してください。
 */
 
--- テストスイート-テストケースリレーション
---* RestoreFromTempTable
-create table r_test_suite_test_case (
-  test_suite_id integer not null
-  , test_case_id integer not null
-) ;
-
--- テスト仕様書-アカウントリレーション
---* RestoreFromTempTable
-create table r_test_specification_account (
-  test_specification_id integer not null
-  , account_id integer not null
-) ;
-
--- タグ-テストケースリレーション
---* RestoreFromTempTable
-create table r_tag_test_case (
-  tag_id integer not null
-  , test_case_id integer not null
-) ;
-
--- タグ-テストスイートリレーション
---* RestoreFromTempTable
-create table r_tag_test_suite (
-  tag_id integer not null
-  , test_suite_id integer not null
-) ;
-
 -- タグ
 --* RestoreFromTempTable
 create table m_tag (
   tag_id integer not null
   , tag_name varchar(100) not null
   , constraint m_tag_PKC primary key (tag_id)
+) ;
+
+-- アカウント
+--* RestoreFromTempTable
+create table account (
+  account_id integer not null
+  , account_name varchar(100) not null
+  , email varchar(255) not null
+  , created_at timestamp with time zone default now() not null
+  , constraint account_PKC primary key (account_id)
+) ;
+
+-- ロール
+--* RestoreFromTempTable
+create table m_role (
+  role_id integer not null
+  , role_name varchar(100) not null
+  , created_at timestamp with time zone default now() not null
+  , constraint m_role_PKC primary key (role_id)
+) ;
+
+-- テスト仕様書
+--* RestoreFromTempTable
+create table m_test_specification (
+  test_specification_id integer not null
+  , title varchar(50) not null
+  , tested_dt timestamp with time zone
+  , test_supplement varchar(255)
+  , created_at timestamp with time zone default now() not null
+  , constraint m_test_specification_PKC primary key (test_specification_id)
 ) ;
 
 -- テストスイート
@@ -56,13 +58,6 @@ create table m_test_suite (
   , expected varchar(255) not null
   , testSupplement varchar(255)
   , constraint m_test_suite_PKC primary key (test_suite_id)
-) ;
-
--- テスト仕様書-テストスイートリレーション
---* RestoreFromTempTable
-create table r_test_specification_test_suite (
-  test_specification_id integer not null
-  , test_suite_id integer not null
 ) ;
 
 -- テストケース
@@ -76,42 +71,89 @@ create table m_test_case (
   , constraint m_test_case_PKC primary key (test_case_id)
 ) ;
 
+-- テストスイート-テストケースリレーション
+--* RestoreFromTempTable
+create table r_test_suite_test_case (
+  test_suite_id integer not null
+  , test_case_id integer not null
+  , foreign key (test_suite_id) references m_test_suite(test_suite_id)
+  on delete cascade
+  , foreign key (test_case_id) references m_test_case(test_case_id)
+  on delete cascade
+) ;
+
+alter table r_test_suite_test_case add constraint r_test_suite_test_case_IX1
+  unique (test_case_id,test_suite_id) ;
+
+-- テスト仕様書-アカウントリレーション
+--* RestoreFromTempTable
+create table r_test_specification_account (
+  test_specification_id integer not null
+  , account_id integer not null
+  , foreign key (test_specification_id) references m_test_specification(test_specification_id)
+  on delete cascade
+  , foreign key (account_id) references account(account_id)
+  on delete cascade
+) ;
+
+alter table r_test_specification_account add constraint r_test_specification_account_IX1
+  unique (test_specification_id,account_id) ;
+
+-- タグ-テストケースリレーション
+--* RestoreFromTempTable
+create table r_tag_test_case (
+  tag_id integer not null
+  , test_case_id integer not null
+  , foreign key (tag_id) references m_tag(tag_id)
+  on delete cascade
+  , foreign key (test_case_id) references m_test_case(test_case_id)
+  on delete cascade
+) ;
+
+alter table r_tag_test_case add constraint r_tag_test_case_IX1
+  unique (test_case_id,tag_id) ;
+
+-- タグ-テストスイートリレーション
+--* RestoreFromTempTable
+create table r_tag_test_suite (
+  tag_id integer not null
+  , test_suite_id integer not null
+  , foreign key (tag_id) references m_tag(tag_id)
+  on delete cascade
+  , foreign key (test_suite_id) references m_test_suite(test_suite_id)
+  on delete cascade
+) ;
+
+alter table r_tag_test_suite add constraint r_tag_test_suite_IX1
+  unique (test_suite_id,tag_id) ;
+
+-- テスト仕様書-テストスイートリレーション
+--* RestoreFromTempTable
+create table r_test_specification_test_suite (
+  test_specification_id integer not null
+  , test_suite_id integer not null
+  , foreign key (test_specification_id) references m_test_specification(test_specification_id)
+  on delete cascade
+  , foreign key (test_suite_id) references m_test_suite(test_suite_id)
+  on delete cascade
+) ;
+
+alter table r_test_specification_test_suite add constraint r_test_specification_test_suite_IX1
+  unique (test_suite_id,test_specification_id) ;
+
 -- アカウント-ロールリレーション
 --* RestoreFromTempTable
 create table r_account_role (
   account_id integer not null
   , role_id integer not null
+  , foreign key (account_id) references account(account_id)
+  on delete cascade
+  , foreign key (role_id) references m_role(role_id)
+  on delete cascade
 ) ;
 
--- ロール
---* RestoreFromTempTable
-create table m_role (
-  role_id integer not null
-  , role_name varchar(100) not null
-  , created_at timestamp with time zone default now() not null
-  , constraint m_role_PKC primary key (role_id)
-) ;
-
--- アカウント
---* RestoreFromTempTable
-create table account (
-  account_id integer not null
-  , account_name varchar(100) not null
-  , email varchar(255) not null
-  , created_at timestamp with time zone default now() not null
-  , constraint account_PKC primary key (account_id)
-) ;
-
--- テスト仕様書
---* RestoreFromTempTable
-create table m_test_specification (
-  test_specification_id integer not null
-  , title varchar(50) not null
-  , tested_dt timestamp with time zone
-  , test_supplement varchar(255)
-  , created_at timestamp with time zone default now() not null
-  , constraint m_test_specification_PKC primary key (test_specification_id)
-) ;
+alter table r_account_role add constraint r_account_role_IX1
+  unique (account_id,role_id) ;
 
 comment on table r_test_suite_test_case is 'テストスイート-テストケースリレーション';
 comment on column r_test_suite_test_case.test_suite_id is 'テストスイートID';
