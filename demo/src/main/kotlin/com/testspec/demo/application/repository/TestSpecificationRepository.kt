@@ -8,7 +8,7 @@ import com.testspec.demo.domain.model.testspecification.type.Keyword
  * テスト仕様書リポジトリ
  */
 interface TestSpecificationRepository {
-    fun findAll(): TestSpecifications?
+    fun findAll(): TestSpecifications
 
     fun search(keyword: Keyword, limit: Int): TestSpecifications
 

@@ -13,7 +13,7 @@ class TestSpecificationService @Autowired constructor(
     val testSpecificationRepository: TestSpecificationRepository
 ) {
 
-    fun findAll(): TestSpecifications? {
+    fun findAll(): TestSpecifications {
         return testSpecificationRepository.findAll()
     }
 }

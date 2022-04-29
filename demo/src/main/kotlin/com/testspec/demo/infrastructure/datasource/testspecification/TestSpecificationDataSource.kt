@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository
 class TestSpecificationDataSource @Autowired constructor(
     val testSpecificationMapper: TestSpecificationMapper
 ): TestSpecificationRepository {
-    override fun findAll(): TestSpecifications? {
-        return testSpecificationMapper.findAll()
+
+    override fun findAll(): TestSpecifications {
+        val testSpecList = testSpecificationMapper.findAll()
+        return TestSpecifications(testSpecList)
     }
 
     override fun search(keyword: Keyword, limit: Int): TestSpecifications {

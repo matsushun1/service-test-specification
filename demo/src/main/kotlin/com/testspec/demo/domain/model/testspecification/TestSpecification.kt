@@ -11,11 +11,12 @@ import com.testspec.demo.domain.type.TestSupplement
  * テスト仕様書
  */
 class TestSpecification(
+    val testSpecificationId: Int,
     val title: Title,
     val testedDt: TestedDt,
-    val testers: Testers,
-    val approver: Approver,
-    val submissionTo: SubmissionTo,
-    val testSupplement: TestSupplement
+    val testers: Testers?,
+    val approver: Approver?,
+    val submissionTo: SubmissionTo?, // TODO: 納品先マスタテーブルを作成する
+    val testSupplement: TestSupplement?
 ) {
 }

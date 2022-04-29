@@ -1,0 +1,1 @@
+CREATE SEQUENCE test_specification_id_seq AS integer;
