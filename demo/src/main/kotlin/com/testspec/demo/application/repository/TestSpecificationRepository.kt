@@ -1,16 +1,16 @@
 package com.testspec.demo.application.repository
 
-import com.testspec.demo.domain.model.testspecification.TestSpecification
-import com.testspec.demo.domain.model.testspecification.TestSpecifications
+import com.testspec.demo.domain.model.testspecification.TestSpec
+import com.testspec.demo.domain.model.testspecification.TestSpecList
 import com.testspec.demo.domain.model.testspecification.type.Keyword
 
 /**
  * テスト仕様書リポジトリ
  */
-interface TestSpecificationRepository {
-    fun findAll(): TestSpecifications
+interface TestSpecRepository {
+    fun findAll(): TestSpecList
 
-    fun search(keyword: Keyword, limit: Int): TestSpecifications
+    fun search(keyword: Keyword, limit: Int): TestSpecList
 
-    fun findOne(): TestSpecification
+    fun findOne(): TestSpec
 }
