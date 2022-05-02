@@ -1,11 +1,14 @@
 package com.testspec.demo.domain.model.account.approver
 
-import com.testspec.demo.domain.model.account.Account
+import com.testspec.demo.domain.model.account.type.Email
 import com.testspec.demo.domain.model.account.type.FullName
-import com.testspec.demo.domain.model.account.type.MailAddress
 
 /**
  * テスト仕様書の納品責任者
  */
-class Approver() {
+class Approver(
+    val approverId: Int,
+    val approverName: FullName,
+    val email: Email
+) {
 }

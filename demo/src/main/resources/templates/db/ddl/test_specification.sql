@@ -36,6 +36,7 @@ create table m_account (
 create table m_role (
   role_id integer not null
   , role_name varchar(100) not null
+  , role_type integer not null
   , created_at timestamp with time zone default now() not null
   , constraint m_role_PKC primary key (role_id)
 ) ;
