@@ -10,11 +10,14 @@ plugins {
 }
 
 buildscript {
-	configurations["classpath"].resolutionStrategy.eachDependency {
-		if (requested.group == "org.jooq") {
-			useVersion("3.16.4")
-		}
-	}
+//	configurations["classpath"].resolutionStrategy.eachDependency {
+//		if (requested.group == "org.jooq") {
+//			useVersion("3.16.4")
+//		}
+//	}
+//	dependencies {
+//		classpath("org.postgres:postgresql:42.3.5")
+//	}
 }
 
 detekt {
@@ -45,8 +48,6 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.jooq:jooq:3.16.4")
-	implementation("org.jooq:jooq-codegen:3.16.4")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql:42.3.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -79,8 +80,8 @@ jooq {
 						isFluentSetters = true
 					}
 					target.apply {
-						packageName = "com.testspec.demo.gen.jooq"
-						directory = "src/main/kotlin"
+						packageName = "com.testspec.demo.jooq"
+						directory = "${project.projectDir}/src/main/kotlin"
 					}
 					strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
 				}
