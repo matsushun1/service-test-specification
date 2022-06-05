@@ -12,7 +12,7 @@ plugins {
 buildscript {
 	configurations["classpath"].resolutionStrategy.eachDependency {
 		if (requested.group == "org.jooq") {
-			useVersion("3.16.1")
+			useVersion("3.16.4")
 		}
 	}
 }
@@ -79,8 +79,8 @@ jooq {
 						isFluentSetters = true
 					}
 					target.apply {
-						packageName = "com.testspec.demo.generated"
-						directory = "src/main/java"
+						packageName = "com.testspec.demo.gen.jooq"
+						directory = "src/main/kotlin"
 					}
 					strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
 				}
