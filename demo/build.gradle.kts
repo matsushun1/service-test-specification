@@ -10,14 +10,11 @@ plugins {
 }
 
 buildscript {
-//	configurations["classpath"].resolutionStrategy.eachDependency {
-//		if (requested.group == "org.jooq") {
-//			useVersion("3.16.4")
-//		}
-//	}
-//	dependencies {
-//		classpath("org.postgres:postgresql:42.3.5")
-//	}
+	configurations["classpath"].resolutionStrategy.eachDependency {
+		if (requested.group == "org.jooq") {
+			useVersion("3.16.4")
+		}
+	}
 }
 
 detekt {
@@ -50,12 +47,13 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql:42.3.2")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	jooqGenerator("org.postgresql:postgresql:42.3.2")
 	jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:3.0.1")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 jooq {
+	version.set("3.16.4")
 	configurations {
 		create("main") {
 			generateSchemaSourceOnCompilation.set(false)
@@ -68,10 +66,23 @@ jooq {
 					password = "postgres"
 				}
 				generator.apply {
+					strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
 					name = "org.jooq.codegen.DefaultGenerator"
 					database.apply {
 						name = "org.jooq.meta.postgres.PostgresDatabase"
 						inputSchema = "public"
+						forcedTypes = listOf(
+							org.jooq.meta.jaxb.ForcedType().apply {
+								name = "varchar"
+								includeExpression = ".*"
+								includeTypes = "JSONB?"
+							},
+							org.jooq.meta.jaxb.ForcedType().apply {
+								name = "varchar"
+								includeExpression = ".*"
+								includeTypes = "INET"
+							}
+						)
 					}
 					generate.apply {
 						isDeprecated = false
@@ -80,10 +91,10 @@ jooq {
 						isFluentSetters = true
 					}
 					target.apply {
-						packageName = "com.testspec.demo.jooq"
-						directory = "${project.projectDir}/src/main/kotlin"
+						encoding = "UTF-8"
+						packageName = "com"
+						directory = "build/generated-src/jooq/main"
 					}
-					strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
 				}
 			}
 		}
