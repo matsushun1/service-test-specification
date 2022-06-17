@@ -6,5 +6,7 @@ package com.testspec.demo.domain.type
 class Expected(
     private val expected: String
 ) {
-    fun expected(): String = this.expected
+    override fun toString(): String {
+        return this.expected
+    }
 }

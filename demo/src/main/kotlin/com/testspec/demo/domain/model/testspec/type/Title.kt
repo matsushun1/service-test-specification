@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.model.testspecification.type
+package com.testspec.demo.domain.model.testspec.type
 
 /**
  * テスト仕様書のタイトル名

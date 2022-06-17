@@ -1,16 +1,16 @@
-package com.testspec.demo.domain.model.testspecification
+package com.testspec.demo.domain.model.testspec.read
 
 import com.testspec.demo.domain.model.account.approver.ApproverList
 import com.testspec.demo.domain.model.account.tester.TesterList
 import com.testspec.demo.domain.model.supplier.SupplierList
-import com.testspec.demo.domain.model.testspecification.type.TestedDt
-import com.testspec.demo.domain.model.testspecification.type.Title
+import com.testspec.demo.domain.model.testspec.type.TestedDt
+import com.testspec.demo.domain.model.testspec.type.Title
 import com.testspec.demo.domain.type.TestSupplement
 
 /**
  * テスト仕様書
  */
-class TestSpec(
+class ReadTestSpec(
     val testSpecId: Int,
     val title: Title,
     val testedDt: TestedDt,

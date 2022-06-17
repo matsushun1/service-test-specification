@@ -6,4 +6,8 @@ package com.testspec.demo.domain.type
 class TestSupplement(
     val testSupplement: String
 ) {
+
+    override fun toString(): String {
+        return this.testSupplement
+    }
 }
