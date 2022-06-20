@@ -1,12 +1,12 @@
 package com.testspec.demo.domain.model.testcase.read
 
 import com.testspec.demo.domain.model.testcase.businessrules.TestCaseStatus
+import com.testspec.demo.domain.model.testcase.type.TestCaseId
 import com.testspec.demo.domain.type.Expected
-import com.testspec.demo.domain.type.TestSupplement
 import com.testspec.demo.domain.type.TestTarget
 
 class ReadTestCase private constructor(
-    private val testCaseId: Int,
+    private val testCaseId: TestCaseId,
     private val target: TestTarget,
     private val expected: Expected,
     private val testSupplement: TestSupplement,
@@ -16,7 +16,7 @@ class ReadTestCase private constructor(
     companion object {
         fun create(testCaseId: Int, target: String, expected: String, testSupplement: String): ReadTestCase {
             return ReadTestCase(
-                testCaseId,
+                TestCaseId(testCaseId),
                 TestTarget(target),
                 Expected(expected),
                 TestSupplement(testSupplement)

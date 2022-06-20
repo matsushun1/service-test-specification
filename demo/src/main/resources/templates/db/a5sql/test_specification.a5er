@@ -1,7 +1,7 @@
 ﻿# A5:ER FORMAT:16
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.17.1 Copyright © 1997 - 2022 m.matsubara
+# A5:SQL Mk-2 Version 2.17.2 Copyright © 1997 - 2022 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -27,18 +27,21 @@ FooterLeft=
 FooterCenter=
 FooterRight=
 ShowPageoutRelation=1
+RDBMSType=6
+RDBMSTypeName=PostgreSQL
 DefaultPkName=%0:s_PKC
 DefaultPkIndexName=%0:s_PKI
 DefaultIndexName=%0:s_IX%1:d
 DefaultFkName=%0:s_FK%1:d
 SqlSeparator=0
 UpperCaseKeyword=0
+CreateOrder=Dependent
 ShowTag=1
 ShowCommonAttributes=0
 BugFixEntityWidth=1
 
 [Entity]
-PName=account
+PName=m_account
 LName=アカウント
 Comment=
 TableOption=
@@ -52,7 +55,7 @@ Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()"
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220501215013
+ModifiedDateTime=20220620221932
 Position="MAIN",800,100,148,108
 ZOrder=-1
 
@@ -100,31 +103,32 @@ Top=1100
 Field="テストケースID","test_case_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
 Field="テスト対象","target","character varying(100)","NOT NULL",,"","",$FFFFFFFF,""
 Field="期待内容","expected","character varying(255)","NOT NULL",,"","",$FFFFFFFF,""
-Field="備考","test_supplement","character varying(255)",,,"","",$FFFFFFFF,""
+Field="備考","description","character varying(255)",,,"","",$FFFFFFFF,""
 Field="状態","status","integer","NOT NULL",,"0","0:未実施1:テスト中2:完了3:保留4:開発者対応中",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
+ModifiedDateTime=20220620222823
 Position="MAIN",100,1100
 ZOrder=-4
 
 [Entity]
-PName=m_test_specification
-LName=テスト仕様書
+PName=m_test_report
+LName=テスト成績書
 Comment=
 TableOption=
 Page=MAIN
 Left=100
 Top=100
-Field="仕様書ID","test_spec_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
+Field="成績書ID","test_report_id","integer","NOT NULL",0,"nextval(\qtest_report_id_seq\q)","",$FFFFFFFF,""
 Field="タイトル","title","character varying(50)","NOT NULL",,"","",$FFFFFFFF,""
 Field="テスト実施日時","tested_dt","timestamp(6) with time zone",,,"","",$FFFFFFFF,""
-Field="備考","test_supplement","character varying(255)",,,"","",$FFFFFFFF,""
+Field="備考","description","character varying(255)",,,"","",$FFFFFFFF,""
 Field="作成日時","created_at","timestamp(6) with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220501215244
+ModifiedDateTime=20220620213824
 Position="MAIN",100,100
 ZOrder=-5
 
@@ -139,10 +143,11 @@ Top=550
 Field="テストスイートID","test_suite_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
 Field="テスト対象","test_target","character varying(100)","NOT NULL",,"","",$FFFFFFFF,""
 Field="期待内容","expected","character varying(255)","NOT NULL",,"","",$FFFFFFFF,""
-Field="備考","testsupplement","character varying(255)",,,"","",$FFFFFFFF,""
+Field="備考","description","character varying(255)",,,"","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
+ModifiedDateTime=20220620222808
 Position="MAIN",100,550
 ZOrder=-6
 
@@ -198,38 +203,38 @@ Position="MAIN",600,550
 ZOrder=-9
 
 [Entity]
-PName=r_test_specification_account
-LName=テスト仕様書-アカウントリレーション
+PName=r_test_report_account
+LName=テスト成績書-アカウントリレーション
 Comment=
 TableOption=
 Page=MAIN
 Left=400
 Top=100
-Field="テスト仕様書ID","test_spec_id","integer","NOT NULL",,"","",$FFFFFFFF,""
+Field="テスト成績書ID","test_report_id","integer","NOT NULL",,"","",$FFFFFFFF,""
 Field="アカウントID","account_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_test_specification_account_ix1=2,test_spec_id,account_id
+Index=r_test_report_account_ix1=2,test_report_id,account_id
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220501215251
+ModifiedDateTime=20220620213935
 Position="MAIN",400,100
 ZOrder=-10
 
 [Entity]
-PName=r_test_specification_test_suite
-LName=テスト仕様書-テストスイートリレーション
+PName=r_test_report_test_suite
+LName=テスト成績書-テストスイートリレーション
 Comment=
 TableOption=
 Page=MAIN
 Left=100
 Top=350
-Field="テスト仕様書ID","test_spec_id","integer","NOT NULL",,"","",$FFFFFFFF,""
+Field="テスト成績書ID","test_report_id","integer","NOT NULL",,"","",$FFFFFFFF,""
 Field="テストスイートID","test_suite_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_test_specification_test_suite_ix1=2,test_suite_id,test_spec_id
+Index=r_test_report_test_suite_ix1=2,test_suite_id,test_report_id
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220501215307
+ModifiedDateTime=20220620214035
 Position="MAIN",100,350
 ZOrder=-11
 
@@ -251,12 +256,12 @@ Position="MAIN",100,850
 ZOrder=-12
 
 [Relation]
-Entity1=m_test_specification
-Entity2=r_test_specification_test_suite
+Entity1=m_test_report
+Entity2=r_test_report_test_suite
 RelationType1=1
 RelationType2=3
-Fields1=test_spec_id
-Fields2=test_spec_id
+Fields1=test_report_id
+Fields2=test_report_id
 Cardinarity1=
 Cardinarity2=
 Position="MAIN",0,500,9500,776,R,R,""
@@ -272,12 +277,12 @@ TermPos2=R
 ZOrder=-21
 
 [Relation]
-Entity1=m_test_specification
-Entity2=r_test_specification_account
+Entity1=m_test_report
+Entity2=r_test_report_account
 RelationType1=1
 RelationType2=3
-Fields1=test_spec_id
-Fields2=test_spec_id
+Fields1=test_report_id
+Fields2=test_report_id
 Cardinarity1=
 Cardinarity2=
 Position="MAIN",0,500,9500,266,R,R,""
@@ -293,8 +298,8 @@ TermPos2=R
 ZOrder=-20
 
 [Relation]
-Entity1=account
-Entity2=r_test_specification_account
+Entity1=m_account
+Entity2=r_test_report_account
 RelationType1=1
 RelationType2=3
 Fields1=account_id
@@ -357,7 +362,7 @@ ZOrder=-23
 
 [Relation]
 Entity1=m_test_suite
-Entity2=r_test_specification_test_suite
+Entity2=r_test_report_test_suite
 RelationType1=1
 RelationType2=3
 Fields1=test_suite_id
@@ -419,7 +424,7 @@ TermPos2=R
 ZOrder=-14
 
 [Relation]
-Entity1=account
+Entity1=m_account
 Entity2=r_account_role
 RelationType1=1
 RelationType2=3
@@ -513,37 +518,38 @@ Top=300
 Field="取引先ID","spplier_id","@INT","NOT NULL",0,"","",$FFFFFFFF,""
 Field="取引先名","spplier_name","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
 Field="備考","description","varchar(100)",,,"","",$FFFFFFFF,""
-Field="作成日時","created_at","timestamp with timezone","NOT NULL",,"now()","",$FFFFFFFF,""
+Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220501215047
+ModifiedDateTime=20220620221442
 Position="MAIN",900,300,201,116
 ZOrder=0
 
 [Entity]
-PName=r_test_spec_supplier
-LName=テスト仕様書-取引先リレーション
+PName=r_test_report_supplier
+LName=テスト成績書-取引先リレーション
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=550
 Top=300
-Field="テスト仕様書ID","test_spec_id","@INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="テスト成績書ID","test_report_id","@INT","NOT NULL",,"","",$FFFFFFFF,""
 Field="取引先ID","supplier_id","@INT","NOT NULL",,"","",$FFFFFFFF,""
+Index=r_report_supplier_IX1=2,test_report_id ,supplier_id 
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220501215201
-Position="Main",550,300
+ModifiedDateTime=20220620223414
+Position="MAIN",550,300
 ZOrder=1
 
 [Relation]
-Entity1=m_test_specification
-Entity2=r_test_spec_supplier
+Entity1=m_test_report
+Entity2=r_test_report_supplier
 RelationType1=1
 RelationType2=3
-Fields1=test_spec_id
+Fields1=test_report_id
 Fields2=
 Cardinarity1=
 Cardinarity2=
@@ -561,7 +567,7 @@ ZOrder=2
 
 [Relation]
 Entity1=m_supplier
-Entity2=r_test_spec_supplier
+Entity2=r_test_report_supplier
 RelationType1=1
 RelationType2=3
 Fields1=spplier_id

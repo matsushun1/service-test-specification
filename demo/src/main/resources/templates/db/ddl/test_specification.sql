@@ -1,254 +1,222 @@
--- Project Name : test_specification
--- Date/Time    : 2022/04/24 18:29:41
--- Author       : masshun
+-- Project Name : noname
+-- Date/Time    : 2022/06/20 22:28:43
+-- Author       : shunmatsushita
 -- RDBMS Type   : PostgreSQL
 -- Application  : A5:SQL Mk-2
 
 /*
-  << ’ˆÓII >>
-  BackupToTempTable, RestoreFromTempTable‹^—–½—ß‚ª•t‰Á‚³‚ê‚Ä‚¢‚Ü‚·B
-  ‚±‚ê‚É‚æ‚èAdrop table, create table Œã‚àƒf[ƒ^‚ªc‚è‚Ü‚·B
-  ‚±‚Ì‹@”\‚Íˆê“I‚É $$TableName ‚Ì‚æ‚¤‚Èˆêƒe[ƒuƒ‹‚ğì¬‚µ‚Ü‚·B
-  ‚±‚Ì‹@”\‚Í A5:SQL Mk-2‚Å‚Ì‚İ—LŒø‚Å‚ ‚é‚±‚Æ‚É’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢B
+  << æ³¨æ„ï¼ï¼ >>
+  BackupToTempTable, RestoreFromTempTableç–‘ä¼¼å‘½ä»¤ãŒä»˜åŠ ã•ã‚Œã¦ã„ã¾ã™ã€‚
+  ã“ã‚Œã«ã‚ˆã‚Šã€drop table, create table å¾Œã‚‚ãƒ‡ãƒ¼ã‚¿ãŒæ®‹ã‚Šã¾ã™ã€‚
+  ã“ã®æ©Ÿèƒ½ã¯ä¸€æ™‚çš„ã« $$TableName ã®ã‚ˆã†ãªä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã—ã¾ã™ã€‚
+  ã“ã®æ©Ÿèƒ½ã¯ A5:SQL Mk-2ã§ã®ã¿æœ‰åŠ¹ã§ã‚ã‚‹ã“ã¨ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚
 */
 
--- ƒ^ƒO
---* RestoreFromTempTable
-create table m_tag (
-  tag_id integer not null
-  , tag_name varchar(100) not null
-  , created_at timestamp with time zone default now() not null
-  , constraint m_tag_PKC primary key (tag_id)
-) ;
-
--- ƒAƒJƒEƒ“ƒg
---* RestoreFromTempTable
-create table m_account (
-  account_id integer not null
-  , account_name varchar(100) not null
-  , email varchar(255) not null
-  , created_at timestamp with time zone default now() not null
-  , constraint account_PKC primary key (account_id)
-) ;
-
--- ƒ[ƒ‹
---* RestoreFromTempTable
-create table m_role (
-  role_id integer not null
-  , role_name varchar(100) not null
-  , role_type integer not null
-  , created_at timestamp with time zone default now() not null
-  , constraint m_role_PKC primary key (role_id)
-) ;
-
--- ƒeƒXƒgd—l‘
---* RestoreFromTempTable
-create table m_test_spec (
-  test_spec_id integer not null
-  , title varchar(50) not null
-  , tested_dt timestamp with time zone
-  , test_supplement varchar(255)
-  , created_at timestamp with time zone default now() not null
-  , constraint m_test_spec_PKC primary key (test_spec_id)
-) ;
-
--- ƒeƒXƒgƒXƒC[ƒg
---* RestoreFromTempTable
-create table m_test_suite (
-  test_suite_id integer not null
-  , test_target varchar(100) not null
-  , expected varchar(255) not null
-  , testSupplement varchar(255)
-  , created_at timestamp with time zone default now() not null
-  , constraint m_test_suite_PKC primary key (test_suite_id)
-) ;
-
--- ƒeƒXƒgƒP[ƒX
---* RestoreFromTempTable
-create table m_test_case (
-  test_case_id integer not null
-  , target varchar(100) not null
-  , expected varchar(255) not null
-  , test_supplement varchar(255)
-  , status integer default 0 not null
-  , created_at timestamp with time zone default now() not null
-  , constraint m_test_case_PKC primary key (test_case_id)
-) ;
-
--- æˆøæ
--- * RestoreFromTempTable
-create table m_supplier (
-  supplier_id integer not null
-  , supplier_name varchar(100) not null
-  , description varchar(255) not null
-  , created_at timestamp with time zone default now() not null
-  , constraint m_supplier_PKC primary key (supplier_id)
-) ;
-
--- ƒeƒXƒgƒXƒC[ƒg-ƒeƒXƒgƒP[ƒXƒŠƒŒ[ƒVƒ‡ƒ“
---* RestoreFromTempTable
-create table r_test_suite_test_case (
-  test_suite_id integer not null
-  , test_case_id integer not null
-  , foreign key (test_suite_id) references m_test_suite(test_suite_id)
-  on delete cascade
-  , foreign key (test_case_id) references m_test_case(test_case_id)
-  on delete cascade
-) ;
-
-alter table r_test_suite_test_case add constraint r_test_suite_test_case_IX1
-  unique (test_case_id,test_suite_id) ;
-
--- ƒeƒXƒgd—l‘-ƒAƒJƒEƒ“ƒgƒŠƒŒ[ƒVƒ‡ƒ“
---* RestoreFromTempTable
-create table r_test_spec_account (
-  test_spec_id integer not null
-  , account_id integer not null
-  , foreign key (test_spec_id) references m_test_spec(test_spec_id)
-  on delete cascade
-  , foreign key (account_id) references m_account(account_id)
-  on delete cascade
-) ;
-
-alter table r_test_spec_account add constraint r_test_spec_account_IX1
-  unique (test_spec_id,account_id) ;
-
--- ƒ^ƒO-ƒeƒXƒgƒP[ƒXƒŠƒŒ[ƒVƒ‡ƒ“
---* RestoreFromTempTable
-create table r_tag_test_case (
-  tag_id integer not null
-  , test_case_id integer not null
-  , foreign key (tag_id) references m_tag(tag_id)
-  on delete cascade
-  , foreign key (test_case_id) references m_test_case(test_case_id)
-  on delete cascade
-) ;
-
-alter table r_tag_test_case add constraint r_tag_test_case_IX1
-  unique (test_case_id,tag_id) ;
-
--- ƒ^ƒO-ƒeƒXƒgƒXƒC[ƒgƒŠƒŒ[ƒVƒ‡ƒ“
---* RestoreFromTempTable
-create table r_tag_test_suite (
-  tag_id integer not null
-  , test_suite_id integer not null
-  , foreign key (tag_id) references m_tag(tag_id)
-  on delete cascade
-  , foreign key (test_suite_id) references m_test_suite(test_suite_id)
-  on delete cascade
-) ;
-
-alter table r_tag_test_suite add constraint r_tag_test_suite_IX1
-  unique (test_suite_id,tag_id) ;
-
--- ƒeƒXƒgd—l‘-ƒeƒXƒgƒXƒC[ƒgƒŠƒŒ[ƒVƒ‡ƒ“
---* RestoreFromTempTable
-create table r_test_spec_test_suite (
-  test_spec_id integer not null
-  , test_suite_id integer not null
-  , foreign key (test_spec_id) references m_test_spec(test_spec_id)
-  on delete cascade
-  , foreign key (test_suite_id) references m_test_suite(test_suite_id)
-  on delete cascade
-) ;
-
-alter table r_test_spec_test_suite add constraint r_test_spec_test_suite_IX1
-  unique (test_suite_id,test_spec_id) ;
-
--- ƒAƒJƒEƒ“ƒg-ƒ[ƒ‹ƒŠƒŒ[ƒVƒ‡ƒ“
+-- ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ-ãƒ­ãƒ¼ãƒ«ãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 --* RestoreFromTempTable
 create table r_account_role (
   account_id integer not null
   , role_id integer not null
-  , foreign key (account_id) references m_account(account_id)
-  on delete cascade
-  , foreign key (role_id) references m_role(role_id)
-  on delete cascade
 ) ;
 
-alter table r_account_role add constraint r_account_role_IX1
+alter table r_account_role add constraint r_account_role_ix1
   unique (account_id,role_id) ;
 
--- ƒeƒXƒgd—l‘-æˆøæƒŠƒŒ[ƒVƒ‡ƒ“
+-- ã‚¿ã‚°-ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 --* RestoreFromTempTable
-create table r_test_spec_supplier (
-  test_spec_id integer not null
+create table r_tag_test_case (
+  tag_id integer not null
+  , test_case_id integer not null
+) ;
+
+alter table r_tag_test_case add constraint r_tag_test_case_ix1
+  unique (test_case_id,tag_id) ;
+
+-- ã‚¿ã‚°-ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+--* RestoreFromTempTable
+create table r_tag_test_suite (
+  tag_id integer not null
+  , test_suite_id integer not null
+) ;
+
+alter table r_tag_test_suite add constraint r_tag_test_suite_ix1
+  unique (test_suite_id,tag_id) ;
+
+-- ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸-ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+--* RestoreFromTempTable
+create table r_test_report_account (
+  test_report_id integer not null
+  , account_id integer not null
+) ;
+
+alter table r_test_report_account add constraint r_test_report_account_ix1
+  unique (test_report_id,account_id) ;
+
+-- ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸-å–å¼•å…ˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+--* RestoreFromTempTable
+create table r_test_report_supplier (
+  test_report_id integer not null
   , supplier_id integer not null
-  , foreign key (test_spec_id) references m_test_spec(test_spec_id)
-  on delete cascade
-  , foreign key (supplier_id) references m_supplier(supplier_id)
-  on delete cascade
-);
+) ;
 
-alter table r_test_spec_supplier add constraint r_test_spec_supplier_IX1
-  unique (test_spec_id,supplier_id) ;
+alter table r_test_report_supplier add constraint r_report_supplier_IX1
+  unique (test_report_id,supplier_id) ;
 
-comment on table r_test_suite_test_case is 'ƒeƒXƒgƒXƒC[ƒg-ƒeƒXƒgƒP[ƒXƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_test_suite_test_case.test_suite_id is 'ƒeƒXƒgƒXƒC[ƒgID';
-comment on column r_test_suite_test_case.test_case_id is 'ƒeƒXƒgƒP[ƒXID';
+-- ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸-ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+--* RestoreFromTempTable
+create table r_test_report_test_suite (
+  test_report_id integer not null
+  , test_suite_id integer not null
+) ;
 
-comment on table r_test_spec_account is 'ƒeƒXƒgd—l‘-ƒAƒJƒEƒ“ƒgƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_test_spec_account.test_spec_id is 'ƒeƒXƒgd—l‘ID';
-comment on column r_test_spec_account.account_id is 'ƒAƒJƒEƒ“ƒgID';
+alter table r_test_report_test_suite add constraint r_test_report_test_suite_ix1
+  unique (test_suite_id,test_report_id) ;
 
-comment on table r_tag_test_case is 'ƒ^ƒO-ƒeƒXƒgƒP[ƒXƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_tag_test_case.tag_id is 'ƒ^ƒOID';
-comment on column r_tag_test_case.test_case_id is 'ƒeƒXƒgƒP[ƒXID';
+-- ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆ-ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+--* RestoreFromTempTable
+create table r_test_suite_test_case (
+  test_suite_id integer not null
+  , test_case_id integer not null
+) ;
 
-comment on table r_tag_test_suite is 'ƒ^ƒO-ƒeƒXƒgƒXƒC[ƒgƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_tag_test_suite.tag_id is 'ƒ^ƒOID';
-comment on column r_tag_test_suite.test_suite_id is 'ƒeƒXƒgƒXƒC[ƒgID';
+alter table r_test_suite_test_case add constraint r_test_suite_test_case_ix1
+  unique (test_case_id,test_suite_id) ;
 
-comment on table m_tag is 'ƒ^ƒO';
-comment on column m_tag.tag_id is 'ƒ^ƒOID';
-comment on column m_tag.tag_name is 'ƒ^ƒO–¼';
+-- ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ
+--* RestoreFromTempTable
+create table m_account (
+  account_id integer not null
+  , account_name character varying(100) not null
+  , email character varying(255) not null
+  , created_at timestamp with time zone default now() not null
+  , constraint m_account_PKC primary key (account_id)
+) ;
 
-comment on table m_test_suite is 'ƒeƒXƒgƒXƒC[ƒg';
-comment on column m_test_suite.test_suite_id is 'ƒeƒXƒgƒXƒC[ƒgID';
-comment on column m_test_suite.test_target is 'ƒeƒXƒg‘ÎÛ';
-comment on column m_test_suite.expected is 'Šú‘Ò“à—e';
-comment on column m_test_suite.testSupplement is '”õl';
+-- ãƒ­ãƒ¼ãƒ«
+--* RestoreFromTempTable
+create table m_role (
+  role_id integer not null
+  , role_name character varying(100) not null
+  , created_at timestamp(6) with time zone default now() not null
+  , constraint m_role_PKC primary key (role_id)
+) ;
 
-comment on table r_test_spec_test_suite is 'ƒeƒXƒgd—l‘-ƒeƒXƒgƒXƒC[ƒgƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_test_spec_test_suite.test_spec_id is 'ƒeƒXƒgd—l‘ID';
-comment on column r_test_spec_test_suite.test_suite_id is 'ƒeƒXƒgƒXƒC[ƒgID';
+-- å–å¼•å…ˆ
+--* RestoreFromTempTable
+create table m_supplier (
+  spplier_id integer not null
+  , spplier_name varchar(100) not null
+  , description varchar(100)
+  , created_at timestamp with time zone default now() not null
+  , constraint m_supplier_PKC primary key (spplier_id)
+) ;
 
-comment on table m_test_case is 'ƒeƒXƒgƒP[ƒX';
-comment on column m_test_case.test_case_id is 'ƒeƒXƒgƒP[ƒXID';
-comment on column m_test_case.target is 'ƒeƒXƒg‘ÎÛ';
-comment on column m_test_case.expected is 'Šú‘Ò“à—e';
-comment on column m_test_case.test_supplement is '”õl';
-comment on column m_test_case.status is 'ó‘Ô:0:–¢À{1:ƒeƒXƒg’†2:Š®—¹3:•Û—¯4:ŠJ”­Ò‘Î‰’†';
+-- ã‚¿ã‚°
+--* RestoreFromTempTable
+create table m_tag (
+  tag_id integer not null
+  , tag_name character varying(100) not null
+  , constraint m_tag_PKC primary key (tag_id)
+) ;
 
-comment on table r_account_role is 'ƒAƒJƒEƒ“ƒg-ƒ[ƒ‹ƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_account_role.account_id is 'ƒAƒJƒEƒ“ƒgID';
-comment on column r_account_role.role_id is 'ƒ[ƒ‹ID';
+-- ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹
+--* RestoreFromTempTable
+create table m_test_case (
+  test_case_id integer not null
+  , target character varying(100) not null
+  , expected character varying(255) not null
+  , description character varying(255)
+  , status integer default 0 not null
+  , constraint m_test_case_PKC primary key (test_case_id)
+) ;
 
-comment on table m_role is 'ƒ[ƒ‹';
-comment on column m_role.role_id is 'ƒ[ƒ‹ID';
-comment on column m_role.role_name is 'ƒ[ƒ‹–¼';
-comment on column m_role.created_at is 'ì¬“ú';
+-- ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸
+--* RestoreFromTempTable
+create table m_test_report (
+  test_report_id integer default nextval('test_report_id_seq') not null
+  , title character varying(50) not null
+  , tested_dt timestamp(6) with time zone
+  , description character varying(255)
+  , created_at timestamp(6) with time zone default now() not null
+  , constraint m_test_report_PKC primary key (test_report_id)
+) ;
 
-comment on table m_account is 'ƒAƒJƒEƒ“ƒg';
-comment on column m_account.account_id is 'ƒAƒJƒEƒ“ƒgID';
-comment on column m_account.account_name is 'ƒAƒJƒEƒ“ƒg–¼';
-comment on column m_account.email is 'ƒ[ƒ‹ƒAƒhƒŒƒX';
-comment on column m_account.created_at is 'ì¬“ú';
+-- ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆ
+--* RestoreFromTempTable
+create table m_test_suite (
+  test_suite_id integer not null
+  , test_target character varying(100) not null
+  , expected character varying(255) not null
+  , description character varying(255)
+  , constraint m_test_suite_PKC primary key (test_suite_id)
+) ;
 
-comment on table m_test_spec is 'ƒeƒXƒgd—l‘';
-comment on column m_test_spec.test_spec_id is 'd—l‘ID';
-comment on column m_test_spec.title is 'ƒ^ƒCƒgƒ‹';
-comment on column m_test_spec.tested_dt is 'ƒeƒXƒgÀ{“ú';
-comment on column m_test_spec.test_supplement is '”õl';
-comment on column m_test_spec.created_at is 'ì¬“ú';
+comment on table r_account_role is 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ-ãƒ­ãƒ¼ãƒ«ãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_account_role.account_id is 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆID';
+comment on column r_account_role.role_id is 'ãƒ­ãƒ¼ãƒ«ID';
 
-comment on table m_supplier is 'æˆøæ';
-comment on column m_supplier.supplier_id is 'æˆøæID';
-comment on column m_supplier.supplier_name is 'æˆøæ–¼';
-comment on column m_supplier.description is '”õl';
-comment on column m_supplier.created_at is 'ì¬“ú';
+comment on table r_tag_test_case is 'ã‚¿ã‚°-ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_tag_test_case.tag_id is 'ã‚¿ã‚°ID';
+comment on column r_tag_test_case.test_case_id is 'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ID';
 
-comment on table r_test_spec_supplier is 'ƒeƒXƒgd—l‘-æˆøæƒŠƒŒ[ƒVƒ‡ƒ“';
-comment on column r_test_spec_supplier.test_spec_id is 'ƒeƒXƒgd—l‘ID';
-comment on column r_test_spec_supplier.supplier_id is 'æˆøæID';
+comment on table r_tag_test_suite is 'ã‚¿ã‚°-ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_tag_test_suite.tag_id is 'ã‚¿ã‚°ID';
+comment on column r_tag_test_suite.test_suite_id is 'ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆID';
+
+comment on table r_test_report_account is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸-ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_test_report_account.test_report_id is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸ID';
+comment on column r_test_report_account.account_id is 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆID';
+
+comment on table r_test_report_supplier is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸-å–å¼•å…ˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_test_report_supplier.test_report_id is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸ID';
+comment on column r_test_report_supplier.supplier_id is 'å–å¼•å…ˆID';
+
+comment on table r_test_report_test_suite is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸-ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_test_report_test_suite.test_report_id is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸ID';
+comment on column r_test_report_test_suite.test_suite_id is 'ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆID';
+
+comment on table r_test_suite_test_case is 'ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆ-ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ãƒªãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³';
+comment on column r_test_suite_test_case.test_suite_id is 'ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆID';
+comment on column r_test_suite_test_case.test_case_id is 'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ID';
+
+comment on table m_account is 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ';
+comment on column m_account.account_id is 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆID';
+comment on column m_account.account_name is 'ã‚¢ã‚«ã‚¦ãƒ³ãƒˆå';
+comment on column m_account.email is 'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹';
+comment on column m_account.created_at is 'ä½œæˆæ—¥æ™‚';
+
+comment on table m_role is 'ãƒ­ãƒ¼ãƒ«';
+comment on column m_role.role_id is 'ãƒ­ãƒ¼ãƒ«ID';
+comment on column m_role.role_name is 'ãƒ­ãƒ¼ãƒ«å';
+comment on column m_role.created_at is 'ä½œæˆæ—¥æ™‚';
+
+comment on table m_supplier is 'å–å¼•å…ˆ';
+comment on column m_supplier.spplier_id is 'å–å¼•å…ˆID';
+comment on column m_supplier.spplier_name is 'å–å¼•å…ˆå';
+comment on column m_supplier.description is 'å‚™è€ƒ';
+comment on column m_supplier.created_at is 'ä½œæˆæ—¥æ™‚';
+
+comment on table m_tag is 'ã‚¿ã‚°';
+comment on column m_tag.tag_id is 'ã‚¿ã‚°ID';
+comment on column m_tag.tag_name is 'ã‚¿ã‚°å';
+
+comment on table m_test_case is 'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹';
+comment on column m_test_case.test_case_id is 'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ID';
+comment on column m_test_case.target is 'ãƒ†ã‚¹ãƒˆå¯¾è±¡';
+comment on column m_test_case.expected is 'æœŸå¾…å†…å®¹';
+comment on column m_test_case.description is 'å‚™è€ƒ';
+comment on column m_test_case.status is 'çŠ¶æ…‹:0:æœªå®Ÿæ–½1:ãƒ†ã‚¹ãƒˆä¸­2:å®Œäº†3:ä¿ç•™4:é–‹ç™ºè€…å¯¾å¿œä¸­';
+
+comment on table m_test_report is 'ãƒ†ã‚¹ãƒˆæˆç¸¾æ›¸';
+comment on column m_test_report.test_report_id is 'æˆç¸¾æ›¸ID';
+comment on column m_test_report.title is 'ã‚¿ã‚¤ãƒˆãƒ«';
+comment on column m_test_report.tested_dt is 'ãƒ†ã‚¹ãƒˆå®Ÿæ–½æ—¥æ™‚';
+comment on column m_test_report.description is 'å‚™è€ƒ';
+comment on column m_test_report.created_at is 'ä½œæˆæ—¥æ™‚';
+
+comment on table m_test_suite is 'ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆ';
+comment on column m_test_suite.test_suite_id is 'ãƒ†ã‚¹ãƒˆã‚¹ã‚¤ãƒ¼ãƒˆID';
+comment on column m_test_suite.test_target is 'ãƒ†ã‚¹ãƒˆå¯¾è±¡';
+comment on column m_test_suite.expected is 'æœŸå¾…å†…å®¹';
+comment on column m_test_suite.description is 'å‚™è€ƒ';
 
