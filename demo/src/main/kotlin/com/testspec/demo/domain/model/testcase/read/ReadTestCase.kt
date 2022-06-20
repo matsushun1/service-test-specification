@@ -1,6 +1,7 @@
 package com.testspec.demo.domain.model.testcase.read
 
 import com.testspec.demo.domain.model.testcase.businessrules.TestCaseStatus
+import com.testspec.demo.domain.model.testcase.type.Description
 import com.testspec.demo.domain.model.testcase.type.TestCaseId
 import com.testspec.demo.domain.type.Expected
 import com.testspec.demo.domain.type.TestTarget
@@ -9,7 +10,7 @@ class ReadTestCase private constructor(
     private val testCaseId: TestCaseId,
     private val target: TestTarget,
     private val expected: Expected,
-    private val testSupplement: TestSupplement,
+    private val description: Description,
     private val status: TestCaseStatus = TestCaseStatus.UNCOMPLETED
 ) {
 
@@ -19,7 +20,7 @@ class ReadTestCase private constructor(
                 TestCaseId(testCaseId),
                 TestTarget(target),
                 Expected(expected),
-                TestSupplement(testSupplement)
+                Description(testSupplement)
             )
         }
     }
@@ -27,7 +28,7 @@ class ReadTestCase private constructor(
     override fun toString(): String {
         return """
             testCaseId: ${this.testCaseId}, target: ${this.target}, expected: ${this.expected},
-            testSupplement: ${this.testSupplement}, status: ${this.status}
+            testSupplement: ${this.description}, status: ${this.status}
         """.trimIndent()
     }
 

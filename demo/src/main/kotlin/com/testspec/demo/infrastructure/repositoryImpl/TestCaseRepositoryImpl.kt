@@ -21,7 +21,7 @@ class TestCaseRepositoryImpl @Autowired constructor(
                 testCaseId = it.get(M_TEST_CASE.TEST_CASE_ID),
                 target = it.get(M_TEST_CASE.TARGET),
                 expected = it.get(M_TEST_CASE.EXPECTED),
-                testSupplement = it.get(M_TEST_CASE.TEST_SUPPLEMENT)
+                testSupplement = it.get(M_TEST_CASE.DESCRIPTION)
             )
         }
     }

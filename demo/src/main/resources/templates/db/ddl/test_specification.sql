@@ -1,5 +1,5 @@
 -- Project Name : noname
--- Date/Time    : 2022/06/20 22:28:43
+-- Date/Time    : 2022/06/20 22:41:30
 -- Author       : shunmatsushita
 -- RDBMS Type   : PostgreSQL
 -- Application  : A5:SQL Mk-2
@@ -97,7 +97,7 @@ create table m_account (
 create table m_role (
   role_id integer not null
   , role_name character varying(100) not null
-  , created_at timestamp(6) with time zone default now() not null
+  , created_at timestamp with time zone default now() not null
   , constraint m_role_PKC primary key (role_id)
 ) ;
 
@@ -116,6 +116,7 @@ create table m_supplier (
 create table m_tag (
   tag_id integer not null
   , tag_name character varying(100) not null
+  , created_at timestamp with time zone default now() not null
   , constraint m_tag_PKC primary key (tag_id)
 ) ;
 
@@ -127,6 +128,7 @@ create table m_test_case (
   , expected character varying(255) not null
   , description character varying(255)
   , status integer default 0 not null
+  , created_at timestamp with time zone default now() not null
   , constraint m_test_case_PKC primary key (test_case_id)
 ) ;
 
@@ -137,7 +139,7 @@ create table m_test_report (
   , title character varying(50) not null
   , tested_dt timestamp(6) with time zone
   , description character varying(255)
-  , created_at timestamp(6) with time zone default now() not null
+  , created_at timestamp with time zone default now() not null
   , constraint m_test_report_PKC primary key (test_report_id)
 ) ;
 
@@ -148,6 +150,7 @@ create table m_test_suite (
   , test_target character varying(100) not null
   , expected character varying(255) not null
   , description character varying(255)
+  , created_at timestamp with time zone default now() not null
   , constraint m_test_suite_PKC primary key (test_suite_id)
 ) ;
 
@@ -199,6 +202,7 @@ comment on column m_supplier.created_at is '作成日時';
 comment on table m_tag is 'タグ';
 comment on column m_tag.tag_id is 'タグID';
 comment on column m_tag.tag_name is 'タグ名';
+comment on column m_tag.created_at is '作成日時';
 
 comment on table m_test_case is 'テストケース';
 comment on column m_test_case.test_case_id is 'テストケースID';
@@ -206,6 +210,7 @@ comment on column m_test_case.target is 'テスト対象';
 comment on column m_test_case.expected is '期待内容';
 comment on column m_test_case.description is '備考';
 comment on column m_test_case.status is '状態:0:未実施1:テスト中2:完了3:保留4:開発者対応中';
+comment on column m_test_case.created_at is '作成日時';
 
 comment on table m_test_report is 'テスト成績書';
 comment on column m_test_report.test_report_id is '成績書ID';
@@ -219,4 +224,5 @@ comment on column m_test_suite.test_suite_id is 'テストスイートID';
 comment on column m_test_suite.test_target is 'テスト対象';
 comment on column m_test_suite.expected is '期待内容';
 comment on column m_test_suite.description is '備考';
+comment on column m_test_suite.created_at is '作成日時';
 
