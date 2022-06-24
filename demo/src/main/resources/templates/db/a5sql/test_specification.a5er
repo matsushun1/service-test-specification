@@ -29,6 +29,10 @@ FooterRight=
 ShowPageoutRelation=1
 RDBMSType=6
 RDBMSTypeName=PostgreSQL
+GenerateDropTableStatement=1
+DropTableIfExists=1
+CreateFk=1
+FkOnDeleteOption=on delete cascade
 DefaultPkName=%0:s_PKC
 DefaultPkIndexName=%0:s_PKI
 DefaultIndexName=%0:s_IX%1:d
@@ -83,8 +87,8 @@ LName=タグ
 Comment=
 TableOption=
 Page=MAIN
-Left=900
-Top=550
+Left=1350
+Top=700
 Field="タグID","tag_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
 Field="タグ名","tag_name","character varying(100)","NOT NULL",,"","",$FFFFFFFF,""
 Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
@@ -92,28 +96,32 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20220620224034
-Position="MAIN",900,550
+Position="MAIN",1350,700
 ZOrder=-3
 
 [Entity]
-PName=m_test_case
-LName=テストケース
+PName=m_test_frame
+LName=テストフレーム
 Comment=
 TableOption=
 Page=MAIN
-Left=100
-Top=1100
-Field="テストケースID","test_case_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
-Field="テスト対象","target","character varying(100)","NOT NULL",,"","",$FFFFFFFF,""
+Left=150
+Top=750
+Field="テストフレームID","test_frame_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
+Field="タイトル","title","character varying(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="対象","target","varchar(255)",,,"","",$FFFFFFFF,""
+Field="事前条件","pre_conditions","character varying(255)",,,"","",$FFFFFFFF,""
 Field="期待内容","expected","character varying(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="タイプ","type","integer","NOT NULL",,"","1:テストケース2:テストスイート",$FFFFFFFF,""
+Field="状態","status","integer","NOT NULL",,"0","0:下書き1:未実施2:テスト中3:完了4:保留5:開発者対応中6:非推奨",$FFFFFFFF,""
 Field="備考","description","character varying(255)",,,"","",$FFFFFFFF,""
-Field="状態","status","integer","NOT NULL",,"0","0:未実施1:テスト中2:完了3:保留4:開発者対応中",$FFFFFFFF,""
+Field="親スイートID","parent_suite_id","integer",,,"","親のテストスイートID",$FFFFFFFF,""
 Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220620224049
-Position="MAIN",100,1100
+ModifiedDateTime=20220624231432
+Position="MAIN",150,750
 ZOrder=-4
 
 [Entity]
@@ -124,37 +132,18 @@ TableOption=
 Page=MAIN
 Left=100
 Top=100
-Field="成績書ID","test_report_id","integer","NOT NULL",0,"nextval(\qtest_report_id_seq\q)","",$FFFFFFFF,""
+Field="成績書ID","test_report_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
 Field="タイトル","title","character varying(50)","NOT NULL",,"","",$FFFFFFFF,""
 Field="テスト実施日時","tested_dt","timestamp(6) with time zone",,,"","",$FFFFFFFF,""
 Field="備考","description","character varying(255)",,,"","",$FFFFFFFF,""
+Field="状態","status","integer","NOT NULL",,"","0:下書き1:未実施2:完了3:保留",$FFFFFFFF,""
 Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220620224058
+ModifiedDateTime=20220624095951
 Position="MAIN",100,100
 ZOrder=-5
-
-[Entity]
-PName=m_test_suite
-LName=テストスイート
-Comment=
-TableOption=
-Page=MAIN
-Left=100
-Top=550
-Field="テストスイートID","test_suite_id","integer","NOT NULL",0,"","",$FFFFFFFF,""
-Field="テスト対象","test_target","character varying(100)","NOT NULL",,"","",$FFFFFFFF,""
-Field="期待内容","expected","character varying(255)","NOT NULL",,"","",$FFFFFFFF,""
-Field="備考","description","character varying(255)",,,"","",$FFFFFFFF,""
-Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
-EffectMode=None
-Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20220620224043
-Position="MAIN",100,550
-ZOrder=-6
 
 [Entity]
 PName=r_account_role
@@ -166,46 +155,13 @@ Left=1100
 Top=100
 Field="アカウントID","account_id","integer","NOT NULL",,"","",$FFFFFFFF,""
 Field="ロールID","role_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_account_role_ix1=2,account_id,role_id
+Index=r_account_role_ux1=2,account_id,role_id
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
+ModifiedDateTime=20220624095029
 Position="MAIN",1100,100
 ZOrder=-7
-
-[Entity]
-PName=r_tag_test_case
-LName=タグ-テストケースリレーション
-Comment=
-TableOption=
-Page=MAIN
-Left=900
-Top=1100
-Field="タグID","tag_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Field="テストケースID","test_case_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_tag_test_case_ix1=2,test_case_id,tag_id
-EffectMode=None
-Color=$000000
-BkColor=$FFFFFF
-Position="MAIN",900,1100
-ZOrder=-8
-
-[Entity]
-PName=r_tag_test_suite
-LName=タグ-テストスイートリレーション
-Comment=
-TableOption=
-Page=MAIN
-Left=600
-Top=550
-Field="タグID","tag_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Field="テストスイートID","test_suite_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_tag_test_suite_ix1=2,test_suite_id,tag_id
-EffectMode=None
-Color=$000000
-BkColor=$FFFFFF
-Position="MAIN",600,550
-ZOrder=-9
 
 [Entity]
 PName=r_test_report_account
@@ -217,69 +173,13 @@ Left=400
 Top=100
 Field="テスト成績書ID","test_report_id","integer","NOT NULL",,"","",$FFFFFFFF,""
 Field="アカウントID","account_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_test_report_account_ix1=2,test_report_id,account_id
+Index=r_test_report_account_ux1=2,test_report_id ,account_id 
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220620213935
+ModifiedDateTime=20220624095040
 Position="MAIN",400,100
 ZOrder=-10
-
-[Entity]
-PName=r_test_report_test_suite
-LName=テスト成績書-テストスイートリレーション
-Comment=
-TableOption=
-Page=MAIN
-Left=100
-Top=350
-Field="テスト成績書ID","test_report_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Field="テストスイートID","test_suite_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_test_report_test_suite_ix1=2,test_suite_id,test_report_id
-EffectMode=None
-Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20220620214035
-Position="MAIN",100,350
-ZOrder=-11
-
-[Entity]
-PName=r_test_suite_test_case
-LName=テストスイート-テストケースリレーション
-Comment=
-TableOption=
-Page=MAIN
-Left=100
-Top=850
-Field="テストスイートID","test_suite_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Field="テストケースID","test_case_id","integer","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_test_suite_test_case_ix1=2,test_case_id,test_suite_id
-EffectMode=None
-Color=$000000
-BkColor=$FFFFFF
-Position="MAIN",100,850
-ZOrder=-12
-
-[Relation]
-Entity1=m_test_report
-Entity2=r_test_report_test_suite
-RelationType1=1
-RelationType2=3
-Fields1=test_report_id
-Fields2=test_report_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,776,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=78
-TermPos1=R
-TermPos2=R
-ZOrder=-21
 
 [Relation]
 Entity1=m_test_report
@@ -324,90 +224,6 @@ TermPos2=R
 ZOrder=-19
 
 [Relation]
-Entity1=m_test_suite
-Entity2=r_test_suite_test_case
-RelationType1=1
-RelationType2=3
-Fields1=test_suite_id
-Fields2=test_suite_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,1011,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=101
-TermPos1=R
-TermPos2=R
-ZOrder=-24
-
-[Relation]
-Entity1=m_test_case
-Entity2=r_test_suite_test_case
-RelationType1=1
-RelationType2=3
-Fields1=test_case_id
-Fields2=test_case_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,363,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=36
-TermPos1=R
-TermPos2=R
-ZOrder=-23
-
-[Relation]
-Entity1=m_test_suite
-Entity2=r_test_report_test_suite
-RelationType1=1
-RelationType2=3
-Fields1=test_suite_id
-Fields2=test_suite_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,538,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=54
-TermPos1=R
-TermPos2=R
-ZOrder=-22
-
-[Relation]
-Entity1=m_tag
-Entity2=r_tag_test_case
-RelationType1=1
-RelationType2=3
-Fields1=tag_id
-Fields2=tag_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,741,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=74
-TermPos1=R
-TermPos2=R
-ZOrder=-15
-
-[Relation]
 Entity1=m_role
 Entity2=r_account_role
 RelationType1=1
@@ -449,69 +265,6 @@ TermPos1=R
 TermPos2=R
 ZOrder=-13
 
-[Relation]
-Entity1=m_test_suite
-Entity2=r_tag_test_suite
-RelationType1=1
-RelationType2=3
-Fields1=test_suite_id
-Fields2=test_suite_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,1250,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=125
-TermPos1=R
-TermPos2=R
-ZOrder=-18
-
-[Relation]
-Entity1=m_tag
-Entity2=r_tag_test_suite
-RelationType1=1
-RelationType2=3
-Fields1=tag_id
-Fields2=tag_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,750,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=75
-TermPos1=R
-TermPos2=R
-ZOrder=-17
-
-[Relation]
-Entity1=m_test_case
-Entity2=r_tag_test_case
-RelationType1=1
-RelationType2=3
-Fields1=test_case_id
-Fields2=test_case_id
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,500,9500,1500,R,R,""
-Dependence=0
-Caption=
-PName=
-LineMode=0
-Bar1=50
-Bar2=950
-Bar3=150
-TermPos1=R
-TermPos2=R
-ZOrder=-16
-
 [Entity]
 PName=m_supplier
 LName=取引先
@@ -520,14 +273,14 @@ TableOption=
 Page=MAIN
 Left=900
 Top=300
-Field="取引先ID","spplier_id","@INT","NOT NULL",0,"","",$FFFFFFFF,""
-Field="取引先名","spplier_name","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="取引先ID","supplier_id","@INT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="取引先名","supplier_name","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
 Field="備考","description","varchar(100)",,,"","",$FFFFFFFF,""
 Field="作成日時","created_at","timestamp with time zone","NOT NULL",,"now()","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220620221442
+ModifiedDateTime=20220624231758
 Position="MAIN",900,300,201,116
 ZOrder=0
 
@@ -537,56 +290,198 @@ LName=テスト成績書-取引先リレーション
 Comment=
 TableOption=
 Page=MAIN
-Left=550
+Left=500
 Top=300
 Field="テスト成績書ID","test_report_id","@INT","NOT NULL",,"","",$FFFFFFFF,""
 Field="取引先ID","supplier_id","@INT","NOT NULL",,"","",$FFFFFFFF,""
-Index=r_report_supplier_IX1=2,test_report_id ,supplier_id 
+Index=r_report_supplier_ux1=2,test_report_id ,supplier_id 
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220620223414
-Position="MAIN",550,300
+ModifiedDateTime=20220624095052
+Position="MAIN",500,300
 ZOrder=1
 
+[Entity]
+PName=r_test_frame_tag
+LName=テストフレーム-タグリレーション
+Comment=
+TableOption=
+Page=MAIN
+Left=750
+Top=700
+Field="テストフレームID","test_frame_id","integer","NOT NULL",,"","",$FFFFFFFF,""
+Field="タグID","tag_id","integer","NOT NULL",,"","",$FFFFFFFF,""
+Index=r_test_frame_tag_ux1=2,test_frame_id ,tag_id 
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220624094650
+Position="MAIN",750,700
+ZOrder=4
+
 [Relation]
-Entity1=m_test_report
-Entity2=r_test_report_supplier
-RelationType1=1
+Entity1=m_test_frame
+Entity2=r_test_frame_tag
+RelationType1=2
 RelationType2=3
-Fields1=test_report_id
-Fields2=
+Fields1=test_frame_id
+Fields2=test_frame_id
 Cardinarity1=
 Cardinarity2=
-Position="MAIN",0,985,2126,585,R,R,""
+Position="MAIN",0,3312,6688,4274,R,R,""
 Dependence=0
 Caption=
 PName=
 LineMode=0
-Bar1=98
-Bar2=213
-Bar3=58
+Bar1=331
+Bar2=669
+Bar3=427
 TermPos1=R
 TermPos2=R
-ZOrder=2
+ZOrder=5
+
+[Relation]
+Entity1=m_tag
+Entity2=r_test_frame_tag
+RelationType1=2
+RelationType2=3
+Fields1=tag_id
+Fields2=tag_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,2475,7525,1941,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=248
+Bar2=752
+Bar3=194
+TermPos1=R
+TermPos2=R
+ZOrder=6
+
+[Entity]
+PName=r_test_report_frame
+LName=テスト成績書-フレームリレーション
+Comment=
+TableOption=
+Page=MAIN
+Left=100
+Top=500
+Field="テスト成績書ID","test_report_id","integer","NOT NULL",,"","",$FFFFFFFF,""
+Field="テストフレームID","test_frame_id","integer","NOT NULL",,"","",$FFFFFFFF,""
+Index=r_test_report_frame_ux1=2,test_report_id ,test_frame_id 
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220624094950
+Position="MAIN",100,500
+ZOrder=7
+
+[Relation]
+Entity1=m_test_frame
+Entity2=r_test_report_frame
+RelationType1=2
+RelationType2=3
+Fields1=test_frame_id
+Fields2=test_frame_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,630,9370,688,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=63
+Bar2=937
+Bar3=69
+TermPos1=R
+TermPos2=R
+ZOrder=8
+
+[Relation]
+Entity1=m_test_report
+Entity2=r_test_report_frame
+RelationType1=2
+RelationType2=3
+Fields1=test_report_id
+Fields2=test_report_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,630,9370,499,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=63
+Bar2=937
+Bar3=50
+TermPos1=R
+TermPos2=R
+ZOrder=9
+
+[Relation]
+Entity1=m_test_frame
+Entity2=m_test_frame
+RelationType1=2
+RelationType2=3
+Fields1=test_frame_id
+Fields2=parent_suite_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,7500,2500,9500,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20220624231423
+LineMode=0
+Bar1=750
+Bar2=250
+Bar3=950
+TermPos1=R
+TermPos2=R
+ZOrder=11
 
 [Relation]
 Entity1=m_supplier
 Entity2=r_test_report_supplier
-RelationType1=1
+RelationType1=2
 RelationType2=3
-Fields1=spplier_id
-Fields2=
+Fields1=supplier_id
+Fields2=supplier_id
 Cardinarity1=
 Cardinarity2=
-Position="MAIN",0,1164,8836,1477,R,R,""
+Position="MAIN",0,1164,8836,1280,R,R,""
 Dependence=0
 Caption=
 PName=
 LineMode=0
 Bar1=116
 Bar2=884
-Bar3=148
+Bar3=128
 TermPos1=R
 TermPos2=R
-ZOrder=3
+ZOrder=13
+
+[Relation]
+Entity1=m_test_report
+Entity2=r_test_report_supplier
+RelationType1=2
+RelationType2=3
+Fields1=test_report_id
+Fields2=test_report_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,1164,2220,630,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=116
+Bar2=222
+Bar3=63
+TermPos1=R
+TermPos2=R
+ZOrder=14
