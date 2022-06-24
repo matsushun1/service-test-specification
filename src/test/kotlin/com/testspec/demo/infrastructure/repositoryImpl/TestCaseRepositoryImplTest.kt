@@ -9,8 +9,9 @@ class TestCaseRepositoryImplTest @Autowired constructor(
     val testCaseRepositoryImpl: TestCaseRepositoryImpl
 ) {
 
+    // TODO: jooq検証が完了次第削除
     @Test
-    fun 全件正常取得チェック() {
+    fun `全件正常取得チェック`() {
         testCaseRepositoryImpl.findAll()
             .forEach { println(it) }
     }
