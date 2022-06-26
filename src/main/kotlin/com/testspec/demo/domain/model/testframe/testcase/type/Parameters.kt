@@ -1,6 +1,4 @@
-package com.testspec.demo.domain.model.testcase.type
-
-import com.testspec.demo.domain.model.testcase.type.Parameter
+package com.testspec.demo.domain.model.testframe.testcase.type
 
 /**
  * テストパラメータのリストクラス

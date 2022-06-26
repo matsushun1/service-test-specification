@@ -1,6 +1,6 @@
 package com.testspec.demo.domain.repository
 
-import com.testspec.demo.domain.model.testcase.read.ReadTestCase
+import com.testspec.demo.domain.model.testframe.testcase.read.ReadTestCase
 import org.springframework.stereotype.Repository
 
 @Repository

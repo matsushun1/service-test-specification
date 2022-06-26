@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.model.testcase.businessrules
+package com.testspec.demo.domain.model.testframe.testcase.businessrules
 
 import java.util.*
 
@@ -10,10 +10,22 @@ class TestCaseTransitions {
 
     init {
         this.allowed[TestCaseStatus.UNCOMPLETED] = EnumSet.of(TestCaseStatus.TESTING, TestCaseStatus.COMPLETED)
-        this.allowed[TestCaseStatus.TESTING] = EnumSet.of(TestCaseStatus.COMPLETED, TestCaseStatus.PENDING, TestCaseStatus.FIXING)
+        this.allowed[TestCaseStatus.TESTING] = EnumSet.of(
+            TestCaseStatus.COMPLETED,
+            TestCaseStatus.PENDING,
+            TestCaseStatus.FIXING
+        )
         this.allowed[TestCaseStatus.COMPLETED] = EnumSet.of(TestCaseStatus.PENDING, TestCaseStatus.FIXING)
-        this.allowed[TestCaseStatus.PENDING] = EnumSet.of(TestCaseStatus.UNCOMPLETED, TestCaseStatus.COMPLETED, TestCaseStatus.FIXING)
-        this.allowed[TestCaseStatus.FIXING] = EnumSet.of(TestCaseStatus.UNCOMPLETED, TestCaseStatus.COMPLETED, TestCaseStatus.PENDING)
+        this.allowed[TestCaseStatus.PENDING] = EnumSet.of(
+            TestCaseStatus.UNCOMPLETED,
+            TestCaseStatus.COMPLETED,
+            TestCaseStatus.FIXING
+        )
+        this.allowed[TestCaseStatus.FIXING] = EnumSet.of(
+            TestCaseStatus.UNCOMPLETED,
+            TestCaseStatus.COMPLETED,
+            TestCaseStatus.PENDING
+        )
     }
 
     /**

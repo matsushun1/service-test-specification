@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.model.testcase.type
+package com.testspec.demo.domain.model.testframe.testcase.type
 
 class TestCaseId (private val testCaseId: Int) {
 
