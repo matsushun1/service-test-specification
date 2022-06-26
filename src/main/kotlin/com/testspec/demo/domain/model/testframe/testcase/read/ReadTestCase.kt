@@ -1,7 +1,7 @@
 package com.testspec.demo.domain.model.testframe.testcase.read
 
 import com.testspec.demo.domain.model.testframe.testcase.businessrules.TestCaseStatus
-import com.testspec.demo.domain.model.testframe.testcase.type.Description
+import com.testspec.demo.domain.model.testframe.type.Description
 import com.testspec.demo.domain.model.testframe.testcase.type.TestCaseId
 import com.testspec.demo.domain.model.testframe.testsuite.type.TestSuiteId
 import com.testspec.demo.domain.model.testframe.Expected
