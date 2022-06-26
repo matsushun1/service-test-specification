@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.type
+package com.testspec.demo.domain.model.testframe
 
 /**
  * テスト対象項目

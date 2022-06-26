@@ -4,8 +4,8 @@ import com.testspec.demo.domain.model.testframe.testcase.businessrules.TestCaseS
 import com.testspec.demo.domain.model.testframe.testcase.type.Description
 import com.testspec.demo.domain.model.testframe.testcase.type.TestCaseId
 import com.testspec.demo.domain.model.testframe.testsuite.type.TestSuiteId
-import com.testspec.demo.domain.type.Expected
-import com.testspec.demo.domain.type.TestTarget
+import com.testspec.demo.domain.model.testframe.Expected
+import com.testspec.demo.domain.model.testframe.TestTarget
 
 class ReadTestCase private constructor(
     private val testCaseId: TestCaseId,
