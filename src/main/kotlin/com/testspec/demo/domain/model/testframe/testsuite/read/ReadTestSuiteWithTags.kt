@@ -11,19 +11,19 @@ class ReadTestSuiteWithTags private constructor(
     private val testSuiteId: TestSuiteId,
     private val title: Title,
     private val expected: Expected,
-    private val description: Description?,
-    private val parentSuiteId: ParentSuiteId?,
-    private val tagList: List<Tag>?
+    private val description: Description? = null,
+    private val parentSuiteId: ParentSuiteId? = null,
+    private val tagList: List<Tag>? = null
 ) {
 
     companion object {
-        fun create(testSuiteId: Int, title: String, expected: String, description: String?, parentSuiteId: Int?, tagList: List<Tag>?): ReadTestSuiteWithTags {
+        fun create(testSuiteId: TestSuiteId, title: Title, expected: Expected, description: Description?, parentSuiteId: ParentSuiteId?, tagList: List<Tag>?): ReadTestSuiteWithTags {
             return ReadTestSuiteWithTags (
-                TestSuiteId(testSuiteId),
-                Title(title),
-                Expected(expected),
-                description?.let { Description(it) },
-                parentSuiteId?.let { ParentSuiteId(it) },
+                testSuiteId,
+                title,
+                expected,
+                description,
+                parentSuiteId,
                 tagList
             )
         }

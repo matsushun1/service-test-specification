@@ -8,12 +8,12 @@ import com.testspec.demo.domain.model.testframe.testsuite.type.TestSuiteId
 import com.testspec.demo.domain.model.testframe.testsuite.type.Title
 
 class ReadTestSuite private constructor(
-  private val testSuiteId: TestSuiteId,
-  private val title: Title,
-  private val expected: Expected,
-  private val description: Description? = null,
-  private val parentSuiteId: ParentSuiteId? = null,
-  private val tagIdList: List<TagId>? = null
+  val testSuiteId: TestSuiteId,
+  val title: Title,
+  val expected: Expected,
+  val description: Description? = null,
+  val parentSuiteId: ParentSuiteId? = null,
+  val tagIdList: List<TagId>? = null
 ) {
 
   companion object {
