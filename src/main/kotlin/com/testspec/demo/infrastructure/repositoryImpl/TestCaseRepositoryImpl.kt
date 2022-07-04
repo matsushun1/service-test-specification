@@ -3,7 +3,7 @@ package com.testspec.demo.infrastructure.repositoryImpl
 import com.Tables.M_TEST_FRAME
 import com.testspec.demo.domain.model.testframe.testcase.read.ReadTestCase
 import com.testspec.demo.domain.model.testframe.type.Type
-import com.testspec.demo.domain.repository.TestCaseRepository
+import com.testspec.demo.domain.repository.testcase.TestCaseRepository
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

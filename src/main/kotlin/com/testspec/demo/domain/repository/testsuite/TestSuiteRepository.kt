@@ -1,4 +1,4 @@
-package com.testspec.demo.domain.repository
+package com.testspec.demo.domain.repository.testsuite
 
 import com.testspec.demo.domain.model.testframe.testsuite.read.ReadTestSuite
 import com.testspec.demo.domain.model.testframe.testsuite.read.TestSuiteQueryParam
