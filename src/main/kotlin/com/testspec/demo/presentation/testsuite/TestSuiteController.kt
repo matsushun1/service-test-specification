@@ -17,7 +17,6 @@ class TestSuiteController @Autowired constructor(
 
     @GetMapping("/withTags")
     fun findWithTags(@RequestBody queryParam: TestSuiteQueryParam): List<ReadTestSuiteWithTags> {
-        val r = readTestSuiteUseCase.findAllWithTags(queryParam)
         return readTestSuiteUseCase.findAllWithTags(queryParam)
     }
 

@@ -3,11 +3,12 @@ package com.testspec.demo.domain.model.testframe
 /**
  * テスト対象項目
  */
-class TestTarget(
-    private val target: String
+@JvmInline
+value class TestTarget(
+    private val value: String
 ) {
-    fun value(): String = this.target
+
     override fun toString(): String {
-        return this.target
+        return this.value
     }
 }

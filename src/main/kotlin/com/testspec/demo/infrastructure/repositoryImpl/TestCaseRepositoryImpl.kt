@@ -2,6 +2,7 @@ package com.testspec.demo.infrastructure.repositoryImpl
 
 import com.Tables.M_TEST_FRAME
 import com.testspec.demo.domain.model.testframe.testcase.read.ReadTestCase
+import com.testspec.demo.domain.model.testframe.testcase.read.TestCaseQueryParam
 import com.testspec.demo.domain.model.testframe.type.Type
 import com.testspec.demo.domain.repository.testcase.TestCaseRepository
 import org.jooq.DSLContext
@@ -13,19 +14,21 @@ class TestCaseRepositoryImpl @Autowired constructor(
     val dsl: DSLContext
 ): TestCaseRepository {
 
-    override fun findAll(): List<ReadTestCase> {
-        val result = dsl.select()
-            .from(M_TEST_FRAME)
-            .where(M_TEST_FRAME.TYPE.eq(Type.TEST_CASE.ordinal))
-            .orderBy(M_TEST_FRAME.CREATED_AT)
+    override fun findAll(queryParam: TestCaseQueryParam): List<ReadTestCase> {
+        val f = M_TEST_FRAME.`as`("f")
+        val result = dsl.select(f.TEST_FRAME_ID, f.TARGET, f.EXPECTED, f.EXPECTED, f.DESCRIPTION, f.STATUS, f.PARENT_SUITE_ID)
+            .from(f)
+            .where(f.TYPE.eq(Type.TEST_CASE.ordinal))
+            .orderBy(f.CREATED_AT)
+            .limit(queryParam.limit)
         return result.map {
             ReadTestCase.create(
-                testCaseId = it.get(M_TEST_FRAME.TEST_FRAME_ID),
-                target = it.get(M_TEST_FRAME.TARGET),
-                expected = it.get(M_TEST_FRAME.EXPECTED),
-                description = it.get(M_TEST_FRAME.DESCRIPTION),
-                status = it.get(M_TEST_FRAME.STATUS),
-                parentSuiteId = it.get(M_TEST_FRAME.PARENT_SUITE_ID)
+                testCaseId = it.get(f.TEST_FRAME_ID),
+                target = it.get(f.TARGET),
+                expected = it.get(f.EXPECTED),
+                description = it.get(f.DESCRIPTION),
+                status = it.get(f.STATUS),
+                parentSuiteId = it.get(f.PARENT_SUITE_ID)
             )
         }
     }

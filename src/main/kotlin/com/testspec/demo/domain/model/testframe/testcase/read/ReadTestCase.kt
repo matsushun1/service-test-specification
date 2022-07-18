@@ -1,19 +1,19 @@
 package com.testspec.demo.domain.model.testframe.testcase.read
 
-import com.testspec.demo.domain.model.testframe.testcase.businessrules.TestCaseStatus
-import com.testspec.demo.domain.model.testframe.type.Description
-import com.testspec.demo.domain.model.testframe.testcase.type.TestCaseId
-import com.testspec.demo.domain.model.testframe.testsuite.type.TestSuiteId
 import com.testspec.demo.domain.model.testframe.Expected
 import com.testspec.demo.domain.model.testframe.TestTarget
+import com.testspec.demo.domain.model.testframe.testcase.businessrules.TestCaseStatus
+import com.testspec.demo.domain.model.testframe.testcase.type.TestCaseId
+import com.testspec.demo.domain.model.testframe.testsuite.type.TestSuiteId
+import com.testspec.demo.domain.model.testframe.type.Description
 
 class ReadTestCase private constructor(
-    private val testCaseId: TestCaseId,
-    private val target: TestTarget,
-    private val expected: Expected,
-    private val description: Description,
-    private val status: TestCaseStatus,
-    private val parentSuiteId: TestSuiteId?
+    val testCaseId: TestCaseId,
+    val target: TestTarget,
+    val expected: Expected,
+    val description: Description,
+    val status: TestCaseStatus,
+    val parentSuiteId: TestSuiteId?
 ) {
 
     companion object {
