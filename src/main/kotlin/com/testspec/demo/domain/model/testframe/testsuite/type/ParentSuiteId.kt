@@ -1,6 +1,9 @@
 package com.testspec.demo.domain.model.testframe.testsuite.type
 
-class ParentSuiteId(val value: Int) {
+import java.io.Serializable
+
+@JvmInline
+value class ParentSuiteId(val value: Int): Serializable {
 
     override fun toString(): String {
         return "${this.value}"

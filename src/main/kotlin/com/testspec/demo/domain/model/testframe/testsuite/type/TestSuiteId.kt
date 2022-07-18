@@ -1,8 +1,10 @@
 package com.testspec.demo.domain.model.testframe.testsuite.type
 
-class TestSuiteId(val value: Int) {
+@JvmInline
+value class TestSuiteId(val value: Int) {
 
     override fun toString(): String {
         return "${this.value}"
     }
+
 }

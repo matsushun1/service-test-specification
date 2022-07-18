@@ -4,7 +4,6 @@ import com.testspec.demo.domain.model.tag.type.TagId
 import com.testspec.demo.domain.model.tag.type.TagName
 import com.testspec.demo.domain.model.testframe.testcase.type.TestCaseId
 import com.testspec.demo.domain.model.testframe.testsuite.type.TestSuiteId
-import com.testspec.demo.domain.model.testframe.type.Type
 
 class Tag private constructor(
     val tagId: TagId,

@@ -1,6 +1,7 @@
 package com.testspec.demo.infrastructure.repositoryImpl
 
-import com.Tables.*
+import com.Tables.M_TEST_FRAME
+import com.Tables.R_TEST_FRAME_TAG
 import com.testspec.demo.domain.model.testframe.testsuite.read.ReadTestSuite
 import com.testspec.demo.domain.model.testframe.testsuite.read.TestSuiteQueryParam
 import com.testspec.demo.domain.model.testframe.type.Type
@@ -32,7 +33,7 @@ class TestSuiteRepositoryImpl @Autowired constructor(
             .where(f.TYPE.eq(Type.TEST_SUITE.type))
             .groupBy(f.TEST_FRAME_ID)
             .orderBy(f.CREATED_AT)
-            .limit(queryParam.limit.value)
+            .limit(queryParam.limit)
             .fetch()
         return result.map {
             ReadTestSuite.create(

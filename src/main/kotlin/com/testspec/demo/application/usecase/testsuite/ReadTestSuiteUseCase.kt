@@ -16,8 +16,8 @@ class ReadTestSuiteUseCase @Autowired constructor(
 
     fun findAllWithTags(queryParam: TestSuiteQueryParam): List<ReadTestSuiteWithTags> {
         val testSuiteList = testSuiteRepositoryImpl.findAll(queryParam)
-        val testSuiteIdTagListMap = tagRepositoryImpl.findBy(TagQueryParam(testSuiteList.map { it.testSuiteId }))
-            .groupBy { it.testSuiteId?.value }
+        val testSuiteIdTagListMap = tagRepositoryImpl.findBy(TagQueryParam(testSuiteIdList = testSuiteList.map { it.testSuiteId }))
+            .groupBy { it.testSuiteId }
         return testSuiteList.map {
             ReadTestSuiteWithTags.create(
                 testSuiteId = it.testSuiteId,
@@ -25,7 +25,7 @@ class ReadTestSuiteUseCase @Autowired constructor(
                 expected = it.expected,
                 description = it.description,
                 parentSuiteId = it.parentSuiteId,
-                tagList = testSuiteIdTagListMap[it.testSuiteId.value]
+                tagList = testSuiteIdTagListMap[it.testSuiteId]
             )
         }
     }
