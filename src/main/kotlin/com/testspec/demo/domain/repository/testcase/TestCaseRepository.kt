@@ -1,11 +1,11 @@
 package com.testspec.demo.domain.repository.testcase
 
-import com.testspec.demo.domain.model.testframe.testcase.read.ReadTestCase
-import com.testspec.demo.domain.model.testframe.testcase.read.TestCaseQueryParam
+import com.testspec.demo.domain.model.testframe.testcase.TestCase
+import com.testspec.demo.domain.model.testframe.testcase.TestCaseQueryParam
 import org.springframework.stereotype.Repository
 
 @Repository
 interface TestCaseRepository {
 
-    fun findAll(queryParam: TestCaseQueryParam): List<ReadTestCase>
+    fun findAll(queryParam: TestCaseQueryParam): List<TestCase>
 }

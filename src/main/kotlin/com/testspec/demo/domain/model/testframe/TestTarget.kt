@@ -8,6 +8,14 @@ value class TestTarget(
     private val value: String
 ) {
 
+    init {
+
+    }
+
+    companion object {
+        
+    }
+
     override fun toString(): String {
         return this.value
     }
